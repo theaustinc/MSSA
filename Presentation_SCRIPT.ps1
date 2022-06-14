@@ -49,6 +49,7 @@ if ($subs.count -gt 1){
     $sub = Read-host
 }
 else {
+    # idk if this would do what i want it to
     $sub = get-azsubscription
 }
 
@@ -56,7 +57,7 @@ else {
 # But what if they want to use an existing RG?
 write-host "Please specify a name for a new Resource Group..."
 $newRG = Read-host
-write-host "Please specify a location..."
+write-host "Please specify a location...(eastus, centralus, westus)"
 $RGloc = Read-host
 new-azresourcegroup -name $newRG -location $RGloc
 
@@ -65,7 +66,7 @@ new-azresourcegroup -name $newRG -location $RGloc
 $rg = get-azresourcegroup | Where-Object {$_.ResourceGroupName -eq $newRG} | select-object *
 Write-Host "Please specify a name for your new Virtual Machine..."
 $vm = Read-host
-Write-Host "Which Operating System would you like to use? [type UBUNTULTS i havent tried it with others yet]"
+Write-Host "Which Operating System would you like to use? (type UBUNTULTS i havent tried it with others yet)"
 $OS = Read-host
 new-azvm -name $vm -ResourceGroupName $rg.ResourceGroupName -Location $RGloc -Image $OS -Credential (Get-credential) 
 
