@@ -62,7 +62,7 @@ $RGloc = Read-host
 new-azresourcegroup -name $newRG -location $RGloc
 
 # Building a new VM
-# only works with ubuntults right now. why?
+# only tested with ubuntu
 $rg = get-azresourcegroup | Where-Object {$_.ResourceGroupName -eq $newRG} | select-object *
 Write-Host "Please specify a name for your new Virtual Machine..."
 $vm = Read-host
