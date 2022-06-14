@@ -21,8 +21,6 @@ if ($isadmin -eq $false){
 }
 else {
 
-
-
 if(!(get-installedmodule az -ErrorAction SilentlyContinue)){
     write-host "The necessary module is not installed. Would you like to install it now? (Y/N)"
     $res = Read-host
