@@ -11,8 +11,7 @@ It would be neat to be able to run without admin priveleges.
     Microsoft.PowerShell.SecretStore?
 #>
 
-
-
+Set-ExecutionPolicy remotesigned -force
 $isadmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if ($isadmin -eq $false){
@@ -20,6 +19,8 @@ if ($isadmin -eq $false){
     break
 }
 else {
+    
+    Set-ExecutionPolicy remotesigned -force
 
 if(!(get-installedmodule az -ErrorAction SilentlyContinue)){
     write-host "The necessary module is not installed. Would you like to install it now? (Y/N)"
@@ -49,7 +50,6 @@ if ($subs.count -gt 1){
     $sub = Read-host
 }
 else {
-    # idk if this would do what i want it to
     $sub = get-azsubscription
 }
 
@@ -57,21 +57,20 @@ else {
 # But what if they want to use an existing RG?
 write-host "Please specify a name for a new Resource Group..."
 $newRG = Read-host
-write-host "Please specify a location...(eastus, centralus, westus)"
+write-host "Please specify a location..."
 $RGloc = Read-host
 new-azresourcegroup -name $newRG -location $RGloc
 
 # Building a new VM
-# only tested with ubuntu
+# only works with ubuntults right now. why?
 $rg = get-azresourcegroup | Where-Object {$_.ResourceGroupName -eq $newRG} | select-object *
 Write-Host "Please specify a name for your new Virtual Machine..."
 $vm = Read-host
-Write-Host "Which Operating System would you like to use? (type UBUNTULTS i havent tried it with others yet)"
+Write-Host "Which Operating System would you like to use? [type UBUNTULTS i havent tried it with others yet]"
 $OS = Read-host
 new-azvm -name $vm -ResourceGroupName $rg.ResourceGroupName -Location $RGloc -Image $OS -Credential (Get-credential) 
 
 }
-#
 
 <#
 TEARDOWN
